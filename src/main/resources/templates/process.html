@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Process CSV Data</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      /* Replace 'https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' with the actual URL of your image */
+      background-image: url('https://images.pexels.com/photos/1148820/pexels-photo-1148820.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed; /* Optional: Fixed background on scroll */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 30px; /* Add some padding around the content */
+      box-sizing: border-box; /* Ensure padding doesn't affect viewport height */
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white container */
+      border-radius: 15px; /* More pronounced rounded corners */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* More prominent shadow */
+      padding: 40px;
+      max-width: 700px; /* Slightly reduced max-width */
+      width: 100%;
+    }
+    h1 {
+      color: #343a40; /* Darker heading */
+      text-align: center;
+      margin-bottom: 35px;
+      font-weight: 700; /* Bolder heading */
+      letter-spacing: 0.5px; /* Slight letter spacing */
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.95); /* Slightly less transparent card */
+      margin-bottom: 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Enhanced card shadow */
+      border-radius: 12px; /* More rounded card corners */
+      border: none; /* Remove default border */
+    }
+    .card-header {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      padding: 18px 25px; /* Increased header padding */
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle bottom border */
+    }
+    .card-body {
+      padding: 25px;
+    }
+    .form-group {
+      margin-bottom: 25px;
+    }
+    label {
+      font-weight: 600; /* Bolder labels */
+      margin-bottom: 8px;
+      display: block;
+      color: #555; /* Slightly darker label text */
+    }
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc; /* Slightly darker border */
+      border-radius: 8px; /* More rounded select */
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1rem;
+    }
+    select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); /* More noticeable focus shadow */
+    }
+    .btn-primary {
+      padding: 14px 30px; /* Even larger button padding */
+      font-size: 1.15rem;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add button shadow */
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      transform: translateY(-3px); /* More pronounced lift on hover */
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhanced hover shadow */
+    }
+    .form-check {
+      margin-bottom: 12px;
+    }
+    .form-check-input {
+      margin-top: 6px;
+      border: 1.5px solid #6c757d; /* Slightly thicker checkbox border */
+      border-radius: 4px; /* Slightly rounded checkbox */
+    }
+    .form-check-input:checked {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .form-check-label {
+      margin-left: 12px;
+      font-size: 1.05rem;
+      color: #495057;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="mb-4 text-center">Process CSV Data</h1>
+  <div class="card">
+    <div class="card-header">Select Data Processing Options</div>
+    <div class="card-body">
+      <form method="post" action="/process" th:object="${operationRequest}">
+        <div class="form-group">
+          <label>Choose Columns to Process:</label>
+          <div th:each="headerColumn : ${headerColumns}" class="form-check">
+            <input type="checkbox" class="form-check-input"
+                   th:name="selectedColumns"
+                   th:value="${headerColumn.name}"
+                   th:id="'check-' + ${headerColumn.name}"
+                   th:checked="${headerColumn.selected}"/>
+            <label class="form-check-label" th:for="'check-' + ${headerColumn.name}" th:text="${headerColumn.name}"></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="missingValueStrategy">Handling Missing Values:</label>
+          <select id="missingValueStrategy" class="form-control" th:field="*{missingValueStrategy}">
+            <option value="">Ignore Missing Values</option>
+            <option value="mean">Replace with Mean</option>
+            <option value="median">Replace with Median</option>
+            <option value="zero">Replace with Zero</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="outlierHandlingStrategy">Dealing with Outliers:</label>
+          <select id="outlierHandlingStrategy" class="form-control" th:field="*{outlierHandlingStrategy}">
+            <option value="">No Outlier Handling</option>
+            <option value="zscore">Remove based on Z-Score</option>
+            <option value="iqr">Remove based on IQR</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="normalizationStrategy">Data Normalization:</label>
+          <select id="normalizationStrategy" class="form-control" th:field="*{normalizationStrategy}">
+            <option value="">No Normalization</option>
+            <option value="minmax">Min-Max Scaling</option>
+            <option value="zscore">Z-Score Standardization</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Run Data Processing</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV File</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            /* Replace 'https://images.pexels.com/photos/225769/pexels-photo-225769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' with the actual URL of your image */
+            background-image: url('https://images.pexels.com/photos/225769/pexels-photo-225769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover; /* Scale the image to cover the entire background */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            background-position: center; /* Center the image in the background */
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* Add some transparency to the container for better readability */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .alert {
+            margin-bottom: 25px;
+            border-radius: 4px;
+            background-color: #fdecea; /* Light red for error */
+            border-color: #e74c3c; /* Red border for error */
+            color: #c0392b; /* Dark red text for error */
+        }
+        .form-group {
+            margin-bottom: 30px;
+        }
+        label {
+            font-weight: 600;
+            color: #555;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .form-control-file {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+        }
+        .btn-primary {
+            background-color: #28a745; /* Green primary color */
+            border-color: #28a745;
+            border-radius: 8px;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background-color: #1e7e34;
+            border-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Upload CSV File</h1>
+    <div th:if="${message}" class="alert alert-danger" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <form method="post" action="/upload" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Select CSV File:</label>
+            <input type="file" class="form-control-file" id="file" name="file" accept=".csv" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Upload</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

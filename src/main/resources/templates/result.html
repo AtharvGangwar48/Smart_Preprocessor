@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Processed Data</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('https://images.pexels.com/photos/1093161/pexels-photo-1093161.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed; /* Optional: Fixed background on scroll */
+      display: flex;
+      flex-direction: column; /* Arrange container items vertically */
+      align-items: center; /* Center items horizontally */
+      justify-content: flex-start; /* Align items to the top */
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 80px; /* Increased top padding to accommodate the button */
+      box-sizing: border-box;
+      color: #333; /* Default text color */
+      position: relative; /* For positioning the top button */
+    }
+    .top-button-container {
+      position: absolute;
+      top: 20px;
+      left: 20px; /* Adjust as needed */
+      z-index: 10; /* Ensure it's above other elements */
+    }
+    .top-link-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      background-color: #6c757d; /* Gray button */
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      text-decoration: none; /* Remove underline from link */
+    }
+    .top-link-button:hover {
+      background-color: #545b62; /* Darker gray on hover */
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white container */
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      max-width: 95%; /* Slightly wider container */
+      width: 100%;
+      margin-bottom: 40px; /* Add some margin at the bottom */
+    }
+    h1 {
+      color: #007bff;
+      margin-bottom: 35px;
+      text-align: center;
+      font-size: 2.5rem; /* Larger heading */
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 35px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      border: none;
+    }
+    .card-header {
+      background-color: #007bff;
+      color: white;
+      padding: 18px 25px;
+      border-bottom: 2px solid #0069d9; /* Darker blue border */
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      font-size: 1.7rem; /* Larger header font */
+      font-weight: 600;
+    }
+    .card-body {
+      padding: 25px;
+    }
+    .table-responsive {
+      overflow-x: auto;
+      margin-bottom: 25px;
+      border: 1px solid #ddd; /* Add a border to the responsive table */
+      border-radius: 8px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 0;
+      background-color: white;
+      border-radius: 8px; /* Rounded corners for the table */
+      overflow: hidden; /* Hide overflow for rounded corners */
+    }
+    .table thead th {
+      background-color: #e9ecef; /* Light gray header background */
+      color: #495057; /* Darker header text */
+      padding: 15px;
+      text-align: left;
+      border-bottom: 2px solid #ced4da;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+    .table tbody tr:nth-child(odd) {
+      background-color: #f8f9fa; /* Very light gray for odd rows */
+    }
+    .table tbody tr:hover {
+      background-color: #f0f0f0; /* Slightly darker hover */
+    }
+    .table td, .table th {
+      border-bottom: 1px solid #dee2e6;
+      padding: 15px;
+      text-align: left;
+    }
+    .btn-primary {
+      padding: 14px 30px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      margin: 30px auto;
+      display: block;
+      text-align: center;
+      background-color: #28a745; /* Green primary button */
+      border-color: #28a745;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      color: white;
+      font-weight: 500;
+    }
+    .btn-primary:hover {
+      background-color: #1e7e34; /* Darker green on hover */
+      border-color: #1e7e34;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    @media (max-width: 768px) {
+      .top-button-container {
+        top: 10px;
+        left: 10px;
+      }
+      .top-link-button {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+      }
+      .table-responsive {
+        border: none;
+      }
+      .table {
+        border: none;
+      }
+      .table thead {
+        display: none;
+      }
+      .table tr {
+        margin-bottom: 15px;
+        display: block;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .table td, .table th {
+        display: block;
+        padding: 10px;
+        text-align: right;
+        border-bottom: none;
+      }
+      .table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 5px;
+        color: #6c757d;
+      }
+      .table thead th, .table td {
+        font-size: 0.9rem;
+      }
+      h1 {
+        font-size: 2rem;
+        margin-top: 40px;
+      }
+      .btn-primary {
+        font-size: 1rem;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="top-button-container">
+  <a href="YOUR_OTHER_LINK_HERE" class="top-link-button">Visualize this Data</a>
+</div>
+<div class="container mt-5">
+  <h1>Processed Data</h1>
+  <div class="card">
+    <div class="card-header">Processed Results</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th th:each="header : ${processedData.headers}" th:text="${header}">Header</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="row : ${processedData.rows}">
+            <td th:each="cell, status : ${row}" th:text="${cell}" th:attr="data-label=${processedData.headers[status.index]}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <a href="/" class="btn btn-primary">Go Back</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
