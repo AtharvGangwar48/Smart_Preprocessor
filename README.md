@@ -33,7 +33,7 @@ To set up the project locally, follow these steps:
    ```
    
 2. **Install dependencies (if using Maven)**:
-     ```bash
+   ```bash
      mvn install
      ```
 
