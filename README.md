@@ -54,6 +54,7 @@ To set up the project locally, follow these steps:
 smart-data-preprocessor/
 ├── backend/                 # Java Spring Boot backend
 │   ├── src/                 # Source files
+|   |── resources/           # HTML Templates
 │   └── pom.xml              # Backend dependencies
 └── README.md                # Project documentation
 ```
