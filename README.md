@@ -1,7 +1,7 @@
 # Smart Data Pre-processor
 
 ## Overview
-The **Smart Data Pre-processor** is a web-based tool designed to simplify the process of cleaning and visualizing datasets for Machine Learning (ML) and Deep Learning (DL) models. This application allows users to upload CSV files, automate data cleaning, and visualize the results without requiring any programming skills.
+The **Smart Data Pre-processor** is a web-based tool designed to simplify the process of cleaning and visualizing datasets for Machine Learning (ML) and Deep Learning (DL) models. This application allows users to upload CSV files, and automate data cleaning without requiring any programming skills.
 
 ## Table of Contents
 - [Features](#features)
@@ -14,11 +14,10 @@ The **Smart Data Pre-processor** is a web-based tool designed to simplify the pr
 ## Features
 - **No-Code Interface**: Users can clean and visualize datasets without writing any code.
 - **Data Cleaning**: Automated handling of missing values, outlier removal, and data normalization.
-- **Data Visualization**: Interactive charts and graphs to visualize cleaned data.
 - **CSV Upload Support**: Users can easily upload CSV files for processing.
 
 ## Technology Stack
-- **Frontend**: React.js + Chart.js
+- **Frontend**: HTML & CSS
 - **Backend**: Java (Spring Boot)
 - **Database**: MongoDB
 - **Processing Libraries**: Apache Commons CSV
